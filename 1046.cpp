@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int maxn = 100005;
-int dis[maxn], a[maxn]; //dis为一号结点到达第i号结点的距离u
+int dis[maxn], a[maxn]; //dis涓轰竴鍙风粨鐐瑰埌杈剧i鍙风粨鐐圭殑璺濈u
 int main()
 {
     int sum = 0, query, n, left, right;
