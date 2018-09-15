@@ -1,58 +1,44 @@
 #include<bits/stdc++.h>
 using namespace std;
 struct student{
-    long long stdID;
+    char id[15];
     int score;
-    int allrank;
-    int locationNumber;
-    int locationRank;
-};
+    int loactaionNumber;
+    int localRank;
+}stu[30005];
 bool cmp(student a, student b){
     if(a.score != b.score)
-        return (a.score > b.score);
+        return a.score > b. score;
     else
-        return (a.stdID < b.stdID);
+        return strcmp(a.id,b.id) < 0;
 }
-int main()
-{
-    student tempstd;
-
-    long long tempID;
-    int tempscore;
-    int N, K,num = 1,ans = 0;
-    vector<student> v,v1;
-    cin >> N;
-    for(int j = 1; j <= N; j++){
-        int flag = 1;
-        cin >> K;
-        for(int h = 0; h < K; h++){
-            cin >>tempID >> tempscore;
-            tempstd.stdID = tempID;
-            tempstd.score = tempscore;
-            tempstd.locationNumber = j;
-            v1.push_back(tempstd);
+int main(){
+    int n, k, num = 0;
+    cin >> n;
+    for(int i = 1; i <= n; i++){
+        cin >> k;
+        for(int j = 0; j < k; j++){
+            scanf("%s %d",&stu[num].id,&stu[num].score);
+            stu[num].loactaionNumber = i;
+            num++;
         }
-        sort(v1.begin(),v1.end(),cmp);
-        for(int i = 0;i < v1.size(); i++){
-            v1[i].locationRank = flag;
-            if(v1[i].score == v1[i-1].score)
-                v1[i].locationRank = v1[i-1].locationRank;
-            v.push_back(v1[i]);
-            flag++;
+        sort(stu + num - k, stu + num, cmp);
+        stu[num - k].localRank = 1 ;
+        for(int j = num - k + 1; j < num; j++){
+            if(stu[j].score == stu[j -1].score)
+                stu[j].localRank = stu[j - 1].localRank;
+            else
+                stu[j].localRank = j + 1 - (num - k);
         }
-        v1.clear();
-        ans += K;
     }
-    cout << ans <<endl;
-    sort(v.begin(),v.end(),cmp);
-    for(int i = 0;i < v.size(); i++){
-        v[i].allrank = num;
-        if(v[i].score == v[i-1].score)
-            v[i].allrank =  v[i -1].allrank;
-        cout << v[i].stdID << " " << v[i].allrank << " " << v[i].locationNumber << " " << v[i].locationRank << " " << v[i].score;
-        if(i != v.size() -1)
-            cout << endl;
-        num++;
+    printf("%d\n", num);
+    sort(stu,stu + num, cmp);
+    int r = 1;
+    for(int i = 0; i < num; i++){
+        if(i > 0 && stu[i].score != stu[i - 1].score)
+            r = i + 1;
+        printf("%s ",stu[i].id);
+        printf("%d %d %d\n", r, stu[i].loactaionNumber,stu[i].localRank);
     }
     return 0;
 }
