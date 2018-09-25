@@ -2,38 +2,38 @@
 using namespace std;
 const int maxn = 100010;
 typedef int Execlelem;
-struct node{    //¶¨Òå¾²Ì¬Á´±í
+struct node{    //å®šä¹‰é™æ€é“¾è¡¨
     Execlelem data;
     int add;
     int next;
-    bool flag = false;  //ÅĞ¶Ï½áµãÊÇ·ñÔÚÁ´±íÉÏ
+    bool flag = false;  //åˆ¤æ–­ç»“ç‚¹æ˜¯å¦åœ¨é“¾è¡¨ä¸Š
 }node_list[maxn];
 bool cmp(node a, node b){
     return a.data < b.data;
 }
-vector<node> v; //ÓÃÈİÆ÷vÀ´×°ÔØÁ´±íÉÏµÄ½áµã
+vector<node> v; //ç”¨å®¹å™¨væ¥è£…è½½é“¾è¡¨ä¸Šçš„ç»“ç‚¹
 int main()
 {
     int h1, n;
-    cin >> n >> h1; //³öÈë½áµã¸öÊıÓëÍ·½ÚµãµØÖ·
+    cin >> n >> h1; //å‡ºå…¥ç»“ç‚¹ä¸ªæ•°ä¸å¤´èŠ‚ç‚¹åœ°å€
     int tempAdd, tempNext;
     Execlelem tempData;
-    if(n == 1){ //Ö»ÓĞÒ»¸ö½áµã
-        scanf("%d %d %d", &tempAdd, &tempData, &tempNext);  //ÊäÈë½áµã
+    if(n == 1){ //åªæœ‰ä¸€ä¸ªç»“ç‚¹
+        scanf("%d %d %d", &tempAdd, &tempData, &tempNext);  //è¾“å…¥ç»“ç‚¹
         cout << 1 <<" " << h1 << endl;
         cout << tempAdd << " " <<tempData << " " << -1 << endl;
     }
-    else if(n == 0){    //ÎŞ½áµã
+    else if(n == 0){    //æ— ç»“ç‚¹
        cout << "0 -1" << endl;
     }
-    else if(h1 == -1)   //Í·½ÚµãµØÖ·Îª¿Õ
+    else if(h1 == -1)   //å¤´èŠ‚ç‚¹åœ°å€ä¸ºç©º
       {
         cout<<0<<' '<<-1;
         return 0;
       }
     else{
         for(int i = 0; i < n; i++){
-            scanf("%d %d %d", &tempAdd, &tempData, &tempNext);  //ÒÀ´ÎÊäÈë½áµã
+            scanf("%d %d %d", &tempAdd, &tempData, &tempNext);  //ä¾æ¬¡è¾“å…¥ç»“ç‚¹
             if(tempAdd < 100000){
                 node_list[tempAdd].next = tempNext;
                 node_list[tempAdd].data = tempData;
@@ -41,20 +41,20 @@ int main()
             }
         }
         int countn = 0, p = h1;
-        while(p != -1){ //Ã¶¾ÙÁ´±í±ê¼Ç½áµãÍ³¼Æ½áµã¸öÊı²¢½«½áµãpushÈëÈİÆ÷
+        while(p != -1){ //æšä¸¾é“¾è¡¨æ ‡è®°ç»“ç‚¹ç»Ÿè®¡ç»“ç‚¹ä¸ªæ•°å¹¶å°†ç»“ç‚¹pushå…¥å®¹å™¨
             node_list[p].flag = true;
             countn++;
             v.push_back(node_list[p]);
             p = node_list[p].next;
         }
-        sort(v.begin(), v.end(), cmp);  //¶Ô·ûºÏÒªÇóµÄ½áµãÅÅĞò
-         for(int i = 0; i < countn; i++){   //¸ü¸Ä½áµãÁ¬½Ó¹ØÏµ
+        sort(v.begin(), v.end(), cmp);  //å¯¹ç¬¦åˆè¦æ±‚çš„ç»“ç‚¹æ’åº
+         for(int i = 0; i < countn; i++){   //æ›´æ”¹ç»“ç‚¹è¿æ¥å…³ç³»
             if(i != countn-1)
                 v[i].next = v[i+1].add;
         }
         v[countn-1].next = -1;
         printf("%d %05d\n", countn, v[0].add);
-        for(int i = 0; i < countn; i++){
+        for(int i = 0; i < countn; i++){    //æ ¼å¼åŒ–è¾“å‡º
             if(i != countn - 1)
                 printf("%05d %d %05d\n", v[i].add, v[i].data, v[i].next);
             else
