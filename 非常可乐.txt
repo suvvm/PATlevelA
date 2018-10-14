@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+//将每个状态的(s, 0, 0)视为第一个结点 每个结点可以抵达6个结点
+//分别为 倒水 s - n s - m n -s n - m m - s m - n  后的6个结点
+//终点为   (s/2, s/2, 0)
+using namespace std;
+const int maxn = 110;
+struct  node{
+    int v[5];
+    int ans;
+}Node;
+int v[5];
+bool inq[maxn][maxn][maxn] = {false}; //记录位置(x,y)是否已入过队
+bool judge(int x, int y){   //判断(x,y)是否需要访问
+    int sum = Node.v[x] + Node.v[y];
+    if(sum >= v[y]){    //如果两容器内可乐总量大于容器y容量
+        Node.v[y] = v[y];   //倒满容器y
+    }else{  //如果总量小于y容量，
+        Node.v[y] = sum;    //将容器x内可乐全部倒入容器y
+    }
+    Node.v[x] = sum - Node.v[y];    //容器x中剩余可乐量为总量减去当前y容器容量
+}
+void BFS(){ //广搜访问(x,y)所在的块，将块中所有元素inq标记为true
+    queue<node> Q;  //定义队列
+    Node.v[0] = v[0], Node.v[1] = 0, Node.v[2] = 0, Node.ans = 0; //当前结点坐标为(x,y)
+    Q.push(Node);   //当前结点入队
+    	memset(inq,0,sizeof(inq));
+    inq[v[0]][v[1]][v[2]] = true;   //将当前结点设为已入队
+    while(!Q.empty()){  //队列不为空
+        node top = Q.front();   //取出对首元素
+        Q.pop();    //对首元素出队
+        if(top.v[0] == top.v[1] && top.v[2] == 0){  //较小容器为0 瓶子和较大容器中可乐各一半时结束
+            printf("%d\n", top.ans);
+            return;
+        }
+        for(int i = 0; i < 3; i++){ //访问队首元素所有倒水操作 s - n s - m n -s n - m m - s m - n
+            for(int j = 0; j < 3; j++){
+                if(i != j){
+                    Node = top; //当前处理结点为top（处理当前结点所有倒水情况）
+                    judge(i, j);
+                    if(!inq[Node.v[0]][Node.v[1]][Node.v[2]]){
+                        Node.ans++;
+                        Q.push(Node);
+                        inq[Node.v[0]][Node.v[1]][Node.v[2]] = true;
+                    }
+                }
+            }
+        }
+    }
+    printf("NO\n");
+}
+int main()
+{
+    int s, n, m;
+
+    while(scanf("%d%d%d", &s, &n, &m)&& s || n || m){
+        v[0] = s;
+        if(n > m){
+            v[2] = m, v[1] = n;
+        }else{
+            v[1] = m, v[2] = n;
+        }
+        BFS();
+    }
+    return 0;
+}
